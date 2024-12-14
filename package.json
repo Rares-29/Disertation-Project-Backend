@@ -1,0 +1,14 @@
+{
+  "name": "dissertation-platform",
+  "version": "1.0.0",
+  "description": "A platform for students and teachers to management the registration process for dissertation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rares Sandu and Mihaila Ioana Corina",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
