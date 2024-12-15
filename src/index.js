@@ -7,12 +7,22 @@
 // De facut rute in postman pt testare
 // De scris service-urile care acceseaza rutele
 const express = require('express');
-const app = express()
+const app = express();
 const routes = require("./routes/index");
-
+require("dotenv").config();
 const student = require("./routes/student")
+const auth = require("./routes/auth");
+const jwt = require("jsonwebtoken");
+const messages = require("./utils/messages");
+const {errorHandler} = require("./middleware/errorHandler");
+const {authorizeToken} = require("./middleware/authorizeToken");
+const PORT = process.env.APP_PORT;
 
-const PORT = 8080;
+app.use(express.json());
+app.use("/auth", auth);
+app.use(authorizeToken);
+app.use(errorHandler);
+
 
 app.use("/student", student);
 
