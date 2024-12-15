@@ -17,14 +17,20 @@ const messages = require("./utils/messages");
 const {errorHandler} = require("./middleware/errorHandler");
 const {authorizeToken} = require("./middleware/authorizeToken");
 const PORT = process.env.APP_PORT;
+const runDbScripts = process.env.RUN_DB_SCRIPTS;
+const {createTables} = require("sqlConnection.js");
+
+if (runDbScripts === "TRUE") {
+    createTables();
+}
 
 app.use(express.json());
 app.use("/auth", auth);
 app.use(authorizeToken);
 app.use(errorHandler);
-
-
 app.use("/student", student);
+
+
 
 app.listen(PORT, (req, resp) => {
     console.log("The server is listening on port: " + PORT);
