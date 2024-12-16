@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router(); // Create a new router
 const jwt = require("jsonwebtoken");
-
+const messages = require("../utils/messages");
 const secret = process.env.SECRET;
-
+const authService = require("../services/authService");
 
 router.post("/login", (req, res) => {
     // get payload
@@ -16,10 +16,14 @@ router.post("/login", (req, res) => {
     }catch(error) {
         console.log(error);
         res.status(400);
-        res.send({"message":"username / password missing from request"});
+        res.send({"message":messages.AUTHENTICATION.MISSING_REQUIRED_FIELDS});
     } 
+})
 
+router.post("/register", (req, res) => {
 
+    authService.register(req, res);
+    res.send("ok");
 })
 
 
