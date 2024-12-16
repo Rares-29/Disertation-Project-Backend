@@ -10,14 +10,16 @@ const MESSAGES = {
     },
     STUDENT: {
         NOT_FOUND: "Student not found",
-        SUCCESS: "Operation successful",
     },
     AUTHENTICATION: {
-        LOGIN_SUCCESS: "Login successful",
         LOGIN_FAILED: "Login failed",
-        SIGNUP_SUCCESS: "Signup successful",
-        SIGNUP_FAILED: "Signup failed",
+        MISSING_REQUIRED_FIELDS: "username / password missing from request",
     },
+    REGISTRATION: {
+        MISSING_REQUIRED_FIELDS: "Required fields are missing from the request",
+        USER_ALREADY_EXIST: "This username/email is already associated with an account",
+        SIGNUP_FAILED: "Signup failed",
+    }
 };
 
 module.exports = MESSAGES;
