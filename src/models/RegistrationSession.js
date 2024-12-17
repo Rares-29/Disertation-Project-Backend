@@ -1,3 +1,7 @@
+const { DataTypes } = require('sequelize');
+const {sequelize} = require('../db/sqlConnection');
+
+
 const RegistrationSession = sequelize.define('Registration_Session', {
     session_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     teacher_id: { type: DataTypes.INTEGER, allowNull: false },

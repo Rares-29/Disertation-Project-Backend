@@ -9,7 +9,6 @@
 require("dotenv").config();
 const express = require('express');
 const app = express();
-const routes = require("./routes/index");
 const student = require("./routes/student")
 const auth = require("./routes/auth");
 const jwt = require("jsonwebtoken");
@@ -25,8 +24,8 @@ const {exportAllUsers} = require("./services/authService.js");
 app.use(express.json());
 app.use("/auth", auth);
 app.use(authorizeToken);
-app.use(errorHandler);
 app.use("/student", student);
+app.use(errorHandler);
 
 
 

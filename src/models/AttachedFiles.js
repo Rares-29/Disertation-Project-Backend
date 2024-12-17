@@ -1,3 +1,7 @@
+const { DataTypes } = require('sequelize');
+const {sequelize} = require('../db/sqlConnection');
+
+
 const AttachedFiles = sequelize.define('Attached_Files', {
     file_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     request_id: { type: DataTypes.INTEGER, allowNull: false },

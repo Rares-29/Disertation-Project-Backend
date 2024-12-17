@@ -28,7 +28,6 @@ const createTables = async () => {
             throw Error("Failed to execute db scripts");
         });
     } catch(error) {
-        throw error;
         console.log("Error connecting to mySql");
         throw Error("Error connecting to mySql");
     }

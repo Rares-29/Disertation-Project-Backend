@@ -1,6 +1,7 @@
 
 const errorHandler = (error, req, res, next) => {
-    const status = res.statusCode ? res.statusCode : 500;
+    const statusCode = error.statusCode;
+    if (typeof statusCode !== "undefined") res.status(statusCode);
     res.json({message: error.message});
 }
 
