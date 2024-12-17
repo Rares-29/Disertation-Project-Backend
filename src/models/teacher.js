@@ -1,3 +1,7 @@
+const { DataTypes } = require('sequelize');
+const {sequelize} = require('../db/sqlConnection');
+
+
 const Teacher = sequelize.define('Teacher', {
     teacher_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     user_id: { type: DataTypes.INTEGER, allowNull: false, unique: true },

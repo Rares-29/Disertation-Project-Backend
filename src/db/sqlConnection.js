@@ -12,7 +12,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     },
   });
 
-module.exports = sequelize;
+module.exports.sequelize = sequelize;
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,

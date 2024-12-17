@@ -1,27 +1,25 @@
-
 const messages = require("../utils/messages");
+const jwt = require("jsonwebtoken");
 
 
  function authorizeToken(req, res, next) {
     const authorizationHeader = req.headers.authorization;
+    res.status(401);
     if (!authorizationHeader) {
-        res.status(401);
-        throw new Error(messages.AUTH.MISSING_AUTH_HEADER);
+        return next(new Error(messages.AUTH.MISSING_AUTH_HEADER))
     }
-
-    if (authorizationHeader.startsWith("Bearer")) {
-        res.status(401);
-        throw new Error(messages.AUTH.WRONG_FORMAT);
+    if (!authorizationHeader.startsWith("Bearer")) {
+        return next(new Error(messages.AUTH.WRONG_FORMAT));
     }
 
     token = authorizationHeader.split(" ")[1];
-    jwt.verify(authorizationHeader, process.env.SECRET, (err, user) => {
+    jwt.verify(token, process.env.SECRET, (err, user) => {
         if (err) {
-            res.status(401);
-            return res.send({"message": messages.AUTH.INVALID_TOKEN});
+            return next(new Error(messages.AUTH.INVALID_TOKEN));
         }
         req.user = user;
     });
+    res.status(200);
     next();
 }
 
