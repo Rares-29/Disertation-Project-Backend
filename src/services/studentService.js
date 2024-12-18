@@ -1,18 +1,19 @@
 const messages = require("../utils/messages");
 const Student = require("../models/Student");
+const ProgramOptions = require("../models/ProgramOption");
 const {InvalidInputError} = require("../utils/errors");
 
 
-const createStudProfile = (user, req, res, transaction) => {
+const createStudProfile = async (user, req, res, transaction) => {
     const student = extractStudent(req, res);
-    validateStudent(student, res);
+    await validateStudent(student, res);
     student.user_id = user.user_id;
-    Student.create(student, {transaction});
+    await Student.create(student, {transaction});
 }
 
 
 const extractStudent = (req, res) => {
-    const data = {
+    const data = {  
     first_name: req.body.first_name,
     last_name: req.body.last_name,
     series: req.body.series,
@@ -23,11 +24,17 @@ const extractStudent = (req, res) => {
     return data;
 }
 
-const validateStudent = (data) => {
+const validateStudent = async (data) => {
     if (typeof data.first_name === "undefined" || typeof data.last_name === "undefined" || typeof data.program_id === "undefined") 
         {
-            throw new InvalidInputError(messages.STUDENT.INVALID_INPUT);
+            throw new InvalidInputError(messages.STUDENT.MISSING_INPUT);
         }
+    const program = await ProgramOptions.findOne(
+        {
+            where: {program_id:data.program_id}
+        }
+    );
+    if (program == null) throw new InvalidInputError(messages.STUDENT.INVALID_INPUT);  
 }
 
 module.exports.createStudProfile = createStudProfile;

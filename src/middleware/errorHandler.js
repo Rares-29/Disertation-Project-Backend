@@ -5,4 +5,10 @@ const errorHandler = (error, req, res, next) => {
     res.json({message: error.message});
 }
 
+const asyncHandler = (fn) => (req, res, next) => {
+    Promise.resolve(fn(req, res, next)).catch(next);
+};
+
+
 exports.errorHandler = errorHandler;
+exports.asyncHandler = asyncHandler;
