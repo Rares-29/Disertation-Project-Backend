@@ -1,37 +1,29 @@
 const express = require('express');
 const router = express.Router(); // Create a new router
-const jwt = require("jsonwebtoken");
 const messages = require("../utils/messages");
 const secret = process.env.SECRET;
 const authService = require("../services/authService");
 
-router.post("/login", (req, res) => {
-    // get payload
+
+router.post("/login", async (req, res, next) => {
     try {
-        const username = req.body.username;
-        const password = req.body.password;
-        checkUsernamePassword(username, password);
-        signedToken = jwt.sign({username: username}, secret, {expiresIn: "3d"});
-        res.json({"token": signedToken});
+        return await authService.login(req, res);
     }catch(error) {
-        console.log(error);
-        res.status(400);
-        res.send({"message":messages.AUTHENTICATION.MISSING_REQUIRED_FIELDS});
-    } 
+        next(error);
+    }
 })
 
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res, next) => {
 
-    authService.register(req, res);
-    res.send("ok");
+    try {
+        await authService.register(req, res);
+        res.status(201);
+        return res.send(messages.REGISTRATION.SUCCESS_MESSAGE);
+    }catch(error) {
+        next(error);
+    }
 })
 
 
-function checkUsernamePassword(username, password) {
-    if (typeof username === "undefined")
-        throw Error("username is missing");
-    if (typeof password === "undefined")
-        throw Error("password is missing");
-}
 
 module.exports = router;
