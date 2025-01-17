@@ -9,8 +9,7 @@ router.get("/", (req, res) => {
 })
 
 router.post("/", (req, res) => {
-    console.log(req);
-    console.log(req.body);
+
     res.json({"name":"hello you2"})
 })
 

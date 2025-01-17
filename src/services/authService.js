@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const Teacher = require("../models/Teacher");
+const Student = require("../models/Student");
 const { Op } = require('sequelize');
 const messages = require("../utils/messages");
 const secret = process.env.SECRET;
@@ -64,7 +66,8 @@ async function login(req, res) {
         throw Error(messages.AUTHENTICATION.WRONG_PASS);
     }
 
-    signedToken = jwt.sign({username: data.username}, secret, {expiresIn: "3d"});
+    let signedToken  = jwt.sign({user_id: userDb.user_id, username: userDb.username, email: userDb.email, role: userDb.role}, secret, {expiresIn: "3d"});
+
     return res.json({"token": signedToken});
 }
 

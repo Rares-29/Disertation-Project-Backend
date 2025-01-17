@@ -15,7 +15,16 @@ class ServerError extends Error {
     }
 }
 
+class NotAuthorizedError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "NotAuthorizedError";
+        this.statusCode = 401;
+    }
+}
+
 
 
 module.exports.InvalidInputError = InvalidInputError;
 module.exports.ServerError = ServerError;
+module.exports.NotAuthorizedError = NotAuthorizedError;

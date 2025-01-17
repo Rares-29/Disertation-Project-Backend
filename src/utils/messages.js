@@ -3,6 +3,7 @@ const MESSAGES = {
         MISSING_AUTH_HEADER: "Authorization header is missing",
         WRONG_FORMAT: "Token has wrong format. BEARER is missing from the start",
         INVALID_TOKEN: "The JWT provided is not valid",
+        NOT_AUTHORIZED: "You are missing privileges to perform this request"
     },
     SERVER: {
         SERVER_STARTED: (port) => `The server is listening on port: ${port}`,
@@ -17,6 +18,14 @@ const MESSAGES = {
         NOT_FOUND: "Teacher not found",
         MISSING_INPUT: "Missing fields: first_name, last_name and committee_id are required",
         INVALID_INPUT: "One of the fields: first_name, last_name, committee_id is wrong defined"
+    },
+    REGISTRATION_SESSION: {
+        MISSING_INPUT: "Missing fields: open_seats, start_date and duration are required",
+        OLD_DATE: "The start_date can't be older than today's date",
+        NOT_AVAILABLE_OPEN_SEATS: "Not enough open seats to perform the operation",
+        INVALID_DURATION: "A registration_session must have between 1 and 30 days",
+        INVALID_DATE_FORMAT: "Invalid date format. Should be YYYY-MM-DD"
+
     },
     AUTHENTICATION: {
         LOGIN_FAILED: "Login failed",

@@ -1,8 +1,9 @@
 const messages = require("../utils/messages");
 const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
 
- function authorizeToken(req, res, next) {
+async function authorizeToken(req, res, next) {
     const authorizationHeader = req.headers.authorization;
     res.status(401);
     if (!authorizationHeader) {
@@ -13,7 +14,7 @@ const jwt = require("jsonwebtoken");
     }
 
     token = authorizationHeader.split(" ")[1];
-    jwt.verify(token, process.env.SECRET, (err, user) => {
+    await jwt.verify(token, process.env.SECRET, async (err, user) => {
         if (err) {
             return next(new Error(messages.AUTH.INVALID_TOKEN));
         }
