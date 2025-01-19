@@ -18,7 +18,7 @@ router.post("/register", async (req, res, next) => {
     try {
         await authService.register(req, res);
         res.status(201);
-        return res.send(messages.REGISTRATION.SUCCESS_MESSAGE);
+        return res.json({"message": messages.REGISTRATION.SUCCESS_MESSAGE});
     }catch(error) {
         next(error);
     }

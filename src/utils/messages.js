@@ -40,6 +40,15 @@ const MESSAGES = {
         SIGNUP_FAILED: "Signup failed",
         SUCCESS_MESSAGE: "The account has been created!",
         SERVER_ERROR: "Something went wrong on our side"
+    },
+    REGISTRATION_REQUEST_SERVICE: {
+        INVALID_INPUT: "Missing input: student_id, teacher_id is needed to perform the operation",
+        RESPONSE_INVALID_INPUT: "Missing input: request_id, status",
+        ALREADY_ACCEPTED: "You can't submit more request, you already have a teacher for disertation",
+        ALREADY_PENDING: "Teacher already received a request from you, just be patient",
+        NOT_FOUND: "Request was not found in the db",
+        RESPONSE_SUCCESS_MESSAGE: "Response sent with success",
+        REQUEST_SUCCESS_MESSAGE: "Request sent with success"
     }
 };
 
