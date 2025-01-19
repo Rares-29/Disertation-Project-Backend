@@ -33,7 +33,16 @@ router.post("/registerSession", async (req, res, next) => {
 router.get("/availableOpenSeats", async (req, res, next) => {
     try {
         const openSeats = await teacherService.getAvailableSeats(req.teacher);
-        res.json({"availableOpenSeats": openSeats});
+        return res.json({"availableOpenSeats": openSeats});
+    }catch(error) {
+        next(error);
+    }
+})
+
+router.post("/respondToRequest", async(req,res,next) => {
+    try {
+        await teacherService.respondToRequest(req);
+        return res.json({message: messages.REGISTRATION_REQUEST_SERVICE.RESPONSE_SUCCESS_MESSAGE});
     }catch(error) {
         next(error);
     }

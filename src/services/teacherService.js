@@ -3,6 +3,9 @@ const Teacher = require("../models/Teacher");
 const {InvalidInputError, ServerError} = require("../utils/errors");
 const Committee = require("../models/Committee");
 const RegistrationSession = require("../models/RegistrationSession");
+const committeeService = require("./committeeService");
+const registrationRequestService = require("./registrationRequestService");
+const {sequelize} = require("../db/sqlConnection");
 
 
 const findTeacher = async (req) => {
@@ -31,6 +34,7 @@ const extractTeacher = (req) => {
     first_name: req.body.first_name,
     last_name: req.body.last_name,
     students_limit: req.body.students_limit,
+    remaining_seats: req.body.students_limit,
     committee_head: req.body.committee_head,
     committee_id: req.body.committee_id};
 
@@ -55,7 +59,26 @@ const registerSession = async (req, res) => {
 
     const data = extractSession(req);
     await validateSession(req.teacher, data);
-    RegistrationSession.create(data);
+
+    
+    const transaction = await sequelize.transaction();
+    try {
+        await RegistrationSession.create(data, {transaction});
+        await Teacher.update({
+            remaining_seats: req.teacher.remaining_seats - data.open_seats
+        }, 
+        {
+            where: {
+                teacher_id: req.teacher.teacher_id
+            },
+            transaction
+        });
+        await transaction.commit();
+    }catch(error) {
+        await transaction.rollback();
+        throw error;
+    }
+
 }
 
 const extractSession = (req) => {
@@ -89,7 +112,7 @@ const validateSession = async (teacher, data) => {
 
 
     data.teacher_id = teacher.teacher_id;
-    let availableOpenSeats = await getAvailableSeats(teacher);
+    let availableOpenSeats = teacher.remaining_seats;
 
 
     if (data.open_seats > availableOpenSeats) 
@@ -126,7 +149,42 @@ const getAvailableSeats = async (teacher) => {
 }
 
 
+const getAllTeachers = async (program_id) => {
+    const committeeIds = await committeeService.getAllCommittee(program_id);
+    const teacherList = [];
+    for (const id of committeeIds) {
+        let teachers = await Teacher.findAll({
+            where: {
+                committee_id: id
+            }
+        });
+        console.log(teachers);
+        teachers = teachers.map(t => (
+            {
+                teacher_id: t.teacher_id,
+                first_name: t.first_name,
+                last_name: t.last_name,
+                remaining_seats: t.remaining_seats
+            }));
+        teacherList.push(...teachers);
+    }
+    return teacherList;
+};
+
+
+const respondToRequest = async (req) => {
+    const {request_id, status, reject_message} = req.body;
+    let response = {};
+    response.request_id = request_id;
+    response.status = status;
+    response.reject_message = reject_message;
+    await registrationRequestService.respondToRequest(response);
+}
+
+
 module.exports.createTeacherProfile = createTeacherProfile;
 module.exports.registerSession = registerSession;
 module.exports.findTeacher = findTeacher;
 module.exports.getAvailableSeats = getAvailableSeats;
+module.exports.getAllTeachers = getAllTeachers;
+module.exports.respondToRequest = respondToRequest;

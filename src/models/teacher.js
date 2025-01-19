@@ -7,7 +7,8 @@ const Teacher = sequelize.define('Teacher', {
     user_id: { type: DataTypes.INTEGER, allowNull: false, unique: true },
     first_name: { type: DataTypes.STRING(100), allowNull: false },
     last_name: { type: DataTypes.STRING(100), allowNull: false },
-    students_limit: { type: DataTypes.INTEGER },
+    students_limit: { type: DataTypes.INTEGER},
+    remaining_seats: { type: DataTypes.INTEGER},
     committee_head: { type: DataTypes.INTEGER },
     committee_id: { type: DataTypes.INTEGER, allowNull: false },
   }, { tableName: 'Teacher', timestamps: false });
